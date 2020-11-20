@@ -16,14 +16,14 @@ This AD9959 Shield can be easily connected to Arduino Mega without additional wi
 
 Key Benefits:
 
-*Low harmonics no more than -60dB. An output RF transformer is used for the correct operation of the current mirror.
-*balancing transformer for TCXO and REF CLK IN options
-*Small spur
-*4 layer board. Signal lines TOP and Bottom, inner layers Ground and Power.
-*Low Noise LDO Stabilizers
-*Separate power supply for all analog and digital lines (1.8 and 3.3V), 5pcs IC voltage stabilizers are used. Additionally, there is an RF Ferrite bead interchange.
-*High-speed decoupling Level converter and TTL 5V matching
-*one of these types of clock source can be used/installed:
+* Low harmonics no more than -60dB. An output RF transformer is used for the correct operation of the current mirror.
+* balancing transformer for TCXO and REF CLK IN options
+* Small spur
+* 4 layer board. Signal lines TOP and Bottom, inner layers Ground and Power.
+* Low Noise LDO Stabilizers
+* Separate power supply for all analog and digital lines (1.8 and 3.3V), 5pcs IC voltage stabilizers are used. Additionally, there is an RF Ferrite bead interchange.
+* High-speed decoupling Level converter and TTL 5V matching
+* one of these types of clock source can be used/installed:
 
 1. XO - Crystal 25 Mhz 20ppm internal oscillator with PLL,
 2. TCXO - 5 - 50 Mhz 1ppm external oscillator PLLz,
