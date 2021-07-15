@@ -12,8 +12,9 @@
   #error The "Encoder" library modified by GRA and AFCH must be used!
 #endif
 
-#define FIRMWAREVERSION 1.1 //06.11.2020
+#define FIRMWAREVERSION 1.2 //15.07.2021
 
+//1.2 15.07.2021 исправлен баг с уходом фазы при перестройке частоты
 //1.1 06.11.2020 исправлена фаза на выходах F2 и F3
 //0.17 Контроль граничных значений частоты и вывод сообщений об ошибках на экран
 //0.16 изменение настроек в меню тактирования применятся только после принудительного сохранения
@@ -33,12 +34,25 @@
 #define SDIO_3_PIN 11
 #define SDIO_1_PIN 9
 
+#define P0_PIN 16
+#define P1_PIN 15
+#define P2_PIN 14
+#define P3_PIN 4
+
 class MyAD9959 : public AD9959<
     12,              // Reset pin (active = high)
     6,              // Chip Enable (active = low)
     5,              // I/O_UPDATE: Apply config changes (pulse high)
     40000000        // 40MHz crystal (optional)
-> {};
+> 
+{
+  public:
+    void AllChanAutoClearPhase()
+    {
+     //setChannels(MyAD9959::Channel0);
+     write(MyAD9959::FR2, FR2_Bits::AllChanAutoClearPhase); 
+    }
+};
 
 MyAD9959  dds;
 
@@ -57,15 +71,16 @@ uint32_t F0OutputFreq=0, F1OutputFreq=0, F2OutputFreq=0, F3OutputFreq=0;
 ClickButton modeButton (MODE_PIN, LOW, CLICKBTN_PULLUP);
 ClickButton backButton (BACK_PIN, LOW, CLICKBTN_PULLUP);
 
-Encoder myEnc(18, 19);
+//Encoder myEnc(18, 19); // Voron EC12PLGSDVF D25K24 (blue)
+Encoder myEnc(19, 18); // Bourns PEC11R-4220K-S0024 (green)
 
 bool MenuEditMode=false;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  Serial.println(F("DDS AD9910 by GRA & AFCH"));
-  Serial.println(F("HW v1.0"));
+  Serial.println(F("DDS AD9959 by GRA & AFCH"));
+  Serial.println(F("HW v1.1"));
   Serial.print(F("SW v"));
   Serial.println(FIRMWAREVERSION);
   
@@ -99,9 +114,19 @@ void setup() {
   pinMode(SDIO_3_PIN, OUTPUT);
   digitalWrite(SDIO_3_PIN, LOW);
   
+  pinMode(P0_PIN, OUTPUT);
+  pinMode(P1_PIN, OUTPUT);
+  pinMode(P2_PIN, OUTPUT);
+  pinMode(P3_PIN, OUTPUT);
+  digitalWrite(P0_PIN, LOW);
+  digitalWrite(P1_PIN, LOW);
+  digitalWrite(P2_PIN, LOW);
+  digitalWrite(P3_PIN, LOW);
+  
   LoadClockSettings();
   LoadMainSettings();
 
+  dds.AllChanAutoClearPhase();
   ApplyChangesToDDS();
 
   curItem = &F0;
