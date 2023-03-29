@@ -25,7 +25,7 @@
  * THE SOFTWARE.
  */
 
-#define GRA_AND_AFCH_ENCODER_MOD
+#define GRA_AND_AFCH_ENCODER_MOD2
 
 #ifndef Encoder_h_
 #define Encoder_h_
@@ -280,20 +280,36 @@ public:
 		: : "x" (arg) : "r22", "r23", "r24", "r25", "r30", "r31");
 #else*/
 		//arg->lastTimeStateChanged=millis();
-		delayMicroseconds(500);
+		//delayMicroseconds(500);
 		uint8_t p1val = DIRECT_PIN_READ(arg->pin1_register, arg->pin1_bitmask);
 		uint8_t p2val = DIRECT_PIN_READ(arg->pin2_register, arg->pin2_bitmask);
-		uint8_t state = arg->state & 3;
+		
+		/*uint8_t state = arg->state & 3;
 		if (p1val) state |= 4; 
 			//else Serial.println("A");
 		if (p2val) state |= 8; 
 			//else Serial.println("B");
-		arg->state = (state >> 2);
+		arg->state = (state >> 2);*/
+		
+		arg->state=arg->state<<2;
+		arg->state=arg->state | p1val;
+		arg->state=arg->state | (p2val<<1);
+		
 		int isStateChanged=false;
 		int increment=0;
-		switch (state) {
-			case B1110: //case B0001: //case B1000: case B0111: //<-- 11 stable state
+		//Serial.println(state, BIN);
+		//*********************
+		char pStr[17];
+		itoa (arg->state, pStr, 2);
+		String tempStr=String(pStr);
+		String ZeroString="00000000";
+		tempStr=ZeroString.substring(0, 8-tempStr.length())+tempStr;
+		Serial.println(tempStr);
+		//*********************
+		switch (arg->state) {
+			//case B1110: //case B0001: //case B1000: case B0111: //<-- 11 stable state
 			//case B1110: case B0001: //case B1000: case B0111:
+			case B01001011:
 				//arg->position++;
 				//arg->position=0;
 				isStateChanged=true;
@@ -301,8 +317,9 @@ public:
 				increment++;
 				//Serial.print("+");
 				break;
-			case B1101: //case B0010: //case B0100: case B1011: //<-- 11 stable state
+			//case B1101: //case B0010: //case B0100: case B1011: //<-- 11 stable state
 			//case B1101: case B0010: //case B0100: case B1011:
+			case B10000111:
 				//arg->position--;
 				//arg->position=0;
 				isStateChanged=true;
@@ -317,14 +334,21 @@ public:
 			int acceleration=0;
 			arg->delta_t=millis()-arg->lastTimeStateChanged;
 			//Serial.println(arg->delta_t);
-			if (arg->delta_t<13) acceleration=5;
-			if (arg->delta_t<5) acceleration=10;
+			//if (arg->delta_t<13) acceleration=5;
+			//if (arg->delta_t<5) acceleration=10;
+			if (arg->delta_t<7) acceleration=5;
+			if (arg->delta_t<3) acceleration=10;
 			arg->lastTimeStateChanged=millis();
 			int multiplier;
 			if (increment>0) multiplier=1;
 			if (increment<0) multiplier=-1;
 			arg->position=arg->position+increment+multiplier*acceleration;
 		}
+		
+		/*if (isStateChanged)
+		{
+			arg->position=arg->position+increment;
+		}*/
 		
 //#endif
 	}
