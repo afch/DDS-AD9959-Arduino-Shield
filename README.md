@@ -52,3 +52,51 @@ Key Benefits:
 </pre>
 
 Where V means that the component must be installed (soldered), and X - means that the component must be removed
+
+# List of Serial Port Commands:
+Starting with version 1.02, the ability to control via the serial port has been added.
+
+  C — Set the current output Channel: (0 — 3)  
+  F — Sets Frequency in Hz (100000 — 225000000)  
+  A — Sets the power (Amplitude) level of the selected channel in dBm (-60 — -7)  
+  P — Sets the Phase of the selected channel in dBm (0 — 360)  
+  M — Gets Model  
+  V — Gets Firmware Version  
+  h — This Help  
+  ; — Commands Separator  
+  Example:  
+  C0;F100000;A-10  
+  Sets the Frequency to 100 kHz, and Output Power (Amplitude) to -10 dBm on Channel 0 (RF OUT0).  
+  Any number of commands in any order is allowed, but the very first command must be "C"  
+
+# Serial Port Settings:
+
+  Speed - 115200 Bouds  
+  Data Bits - 8  
+  Stop Bits - 1  
+  Parity - No  
+  DTR - OFF  
+# Windows:
+
+An example of setting up a serial port in the Windows console:
+  <pre>
+  mode COM3 baud=115200 DTR=OFF Data=8
+  </pre>
+  
+Usage example:
+  <pre>
+  echo F100000000 > COM3
+  </pre>
+# Ubuntu 22.04:
+
+An example of setting up a serial port in the Ubuntu:
+  <pre>
+  sudo usermod -aG dialout $USER_NAME$
+  sudo chmod a+rw /dev/ttyUSB0
+  sudo stty -F /dev/ttyUSB0 115200 cs8 ixoff -hupcl -echo
+  </pre>
+  
+Usage example:
+  <pre>
+  echo "F100000000" > /dev/ttyUSB0
+  </pre>
