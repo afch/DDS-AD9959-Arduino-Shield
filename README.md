@@ -64,6 +64,7 @@ Starting with version 1.02, the ability to control via the serial port has been 
   V — Gets Firmware Version  
   h — This Help  
   ; — Commands Separator  
+  
   Example:  
   C0;F100000;A-10  
   Sets the Frequency to 100 kHz, and Output Power (Amplitude) to -10 dBm on Channel 0 (RF OUT0).  
