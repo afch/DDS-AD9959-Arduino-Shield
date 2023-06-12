@@ -1,4 +1,4 @@
-#define DBG 0
+ #define DBG 0
 
 #include <EEPROM.h>
 #include <U8g2lib.h>
@@ -8,12 +8,13 @@
 #include <ClickButton.h>
 
 #include <Encoder.h>
-#ifndef GRA_AND_AFCH_ENCODER_MOD
+#ifndef GRA_AND_AFCH_ENCODER_MOD3
   #error The "Encoder" library modified by GRA and AFCH must be used!
 #endif
 
-#define FIRMWAREVERSION 1.2 //15.07.2021
+#define FIRMWAREVERSION 1.21 //12.06.2023
 
+//1.21 12.06.2023 добавлена поддержка управления через последовтельный порт
 //1.2 15.07.2021 исправлен баг с уходом фазы при перестройке частоты
 //1.1 06.11.2020 исправлена фаза на выходах F2 и F3
 //0.17 Контроль граничных значений частоты и вывод сообщений об ошибках на экран
@@ -24,6 +25,10 @@
 //0.13 Добавлено сохранение настроек тактирования в EEPROM
 //0.12 Добавляем сохранение основных настроек в EEPROM
 //0.11 включаем в DisplayMenu отображение реальных значений, устраняем ошибку когда кнопка back не отключает режим редактирования
+
+#include <AsyncStream.h>
+AsyncStream<110> serialbuffer(&Serial, '\n');
+#include <GParser.h>
 
 #include  "AD9959.h"
 #ifndef GRA_AND_AFCH_AD9959_MOD
@@ -172,6 +177,7 @@ void DownButtonDown()
 
 void loop() 
 {
+  ReadSerialCommands();
   int curPos=0;
   curPos=myEnc.read();
   
