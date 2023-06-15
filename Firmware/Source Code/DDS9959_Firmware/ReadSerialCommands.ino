@@ -1,5 +1,11 @@
+/*
+By default, the maximum length of one message is 64 bytes, you can change it in HardwareSerial.h, string #46: #define SERIAL_TX_BUFFER_SIZE 64
+*/
 
 int C=-1; //Номер канала(выхода) для управления, по умолчанию не задан (-1), допустимые значения: 0 - 3
+
+#define SERIAL_PACKAGE_MAX_LENGTH 110
+char SerialBuffer[SERIAL_PACKAGE_MAX_LENGTH];
 
 const char HELP_STRING [] PROGMEM = "C — Set the current output Channel: (0 — 3)\n"
           "F — Sets Frequency in Hz (100000 — 225000000)\n"
@@ -13,16 +19,30 @@ const char HELP_STRING [] PROGMEM = "C — Set the current output Channel: (0 �
           "Example:\n"
           "C0;F100000;A-10\n"
           "Sets the Frequency to 100 kHz, and Output Power (Amplitude) to -10 dBm on Channel 0 (RF OUT0).\n"
-          "Any number of commands in any order is allowed, but the very first command must be \"C\".";
+          "Any number of commands in any order is allowed, but the very first command must be \"C\".\n"
+          "Note: by default, the maximum length of one message is 64 bytes";
+
+
+bool inRange(int32_t val, int32_t minimum, int32_t maximum)
+{
+  return ((minimum <= val) && (val <= maximum));
+}
+
+
+char Buff[110];
 
 void ReadSerialCommands()
 {
+  if (!Serial.available()) return;
+  int RcvCounter=0;
+  RcvCounter = Serial.readBytesUntil('\n', Buff, 110);
+  if (RcvCounter == 0) return;
+  Buff[RcvCounter]='\0';
+  
   int32_t value=0;
   char command;
 
-  if (serialbuffer.available())
-  {
-    GParser data(serialbuffer.buf, ';');
+    GParser data(Buff, ';');
     int commandsCounter = data.split();
 
     for (int i=0; i < commandsCounter; i++)
@@ -157,10 +177,4 @@ void ReadSerialCommands()
 
     DisplayMenu(menuType);
     ApplyChangesToDDS();
-  }
-}
-
-bool inRange(int32_t val, int32_t minimum, int32_t maximum)
-{
-  return ((minimum <= val) && (val <= maximum));
 }

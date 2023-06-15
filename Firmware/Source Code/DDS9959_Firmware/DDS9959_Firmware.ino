@@ -1,4 +1,4 @@
- #define DBG 0
+#define DBG 0
 
 #include <EEPROM.h>
 #include <U8g2lib.h>
@@ -12,8 +12,9 @@
   #error The "Encoder" library modified by GRA and AFCH must be used!
 #endif
 
-#define FIRMWAREVERSION 1.21 //12.06.2023
+#define FIRMWAREVERSION 1.22 //15.06.2023
 
+//1.22 ускорена обработка команд через последовтельный порт
 //1.21 12.06.2023 добавлена поддержка управления через последовтельный порт
 //1.2 15.07.2021 исправлен баг с уходом фазы при перестройке частоты
 //1.1 06.11.2020 исправлена фаза на выходах F2 и F3
@@ -26,8 +27,8 @@
 //0.12 Добавляем сохранение основных настроек в EEPROM
 //0.11 включаем в DisplayMenu отображение реальных значений, устраняем ошибку когда кнопка back не отключает режим редактирования
 
-#include <AsyncStream.h>
-AsyncStream<110> serialbuffer(&Serial, '\n');
+//#include <AsyncStream.h>
+//AsyncStream<110> serialbuffer(&Serial, '\n');
 #include <GParser.h>
 
 #include  "AD9959.h"
@@ -84,6 +85,7 @@ bool MenuEditMode=false;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+  Serial.setTimeout(10);
   Serial.println(F("DDS AD9959 by GRA & AFCH"));
   Serial.println(F("HW v1.1"));
   Serial.print(F("SW v"));
