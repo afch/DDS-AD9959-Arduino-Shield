@@ -5,7 +5,7 @@ By default, the maximum length of one message is 64 bytes, you can change it in 
 int C=-1; //Номер канала(выхода) для управления, по умолчанию не задан (-1), допустимые значения: 0 - 3
 
 #define SERIAL_PACKAGE_MAX_LENGTH 110
-char SerialBuffer[SERIAL_PACKAGE_MAX_LENGTH];
+char Buff[SERIAL_PACKAGE_MAX_LENGTH];
 
 const char HELP_STRING [] PROGMEM = "C — Set the current output Channel: (0 — 3)\n"
           "F — Sets Frequency in Hz (100000 — 225000000)\n"
@@ -27,9 +27,6 @@ bool inRange(int32_t val, int32_t minimum, int32_t maximum)
 {
   return ((minimum <= val) && (val <= maximum));
 }
-
-
-char Buff[110];
 
 void ReadSerialCommands()
 {
