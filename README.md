@@ -61,6 +61,8 @@ Starting with version 1.02, the ability to control via the serial port has been 
   A — Sets the power (Amplitude) level of the selected channel in dBm (-60 — -7)  
   P — Sets the Phase of the selected channel in dBm (0 — 360)  
   M — Gets Model  
+  E - Enable Outputs (ALL)  
+  D - Disable Outputs (ALL)  
   V — Gets Firmware Version  
   h — This Help  
   ; — Commands Separator  
