@@ -12,6 +12,8 @@ const char HELP_STRING [] PROGMEM = "C — Set the current output Channel: (0 �
           "A — Sets the power (Amplitude) level of the selected channel in dBm (-60 — -7)\n"
           "P — Sets the Phase of the selected channel in dBm (0 — 360)\n"
           "M — Gets Model\n"
+          "E - Enable Outputs (ALL)\n"
+          "D - Disable Outputs (ALL)\n"  
           "V — Gets Firmware Version\n"
           "h — This Help\n"
           "; — Commands Separator"
@@ -149,6 +151,18 @@ void ReadSerialCommands()
               break;
             }
           } else Serial.println("Phase is OUT OF RANGE (0 — 360)");
+        break;
+
+        case 'D': //Firmware Version request
+          Serial.println(F("Outputs Disabled"));
+          digitalWrite(POWER_DOWN_CONTROL_PIN, HIGH);
+          isPWR_DWN = true;
+        break;
+
+        case 'E': //Firmware Version request
+          Serial.println(F("Outputs Enabled"));
+          digitalWrite(POWER_DOWN_CONTROL_PIN, LOW);
+          isPWR_DWN = false;
         break;
 
         case 'V': //Firmware Version request

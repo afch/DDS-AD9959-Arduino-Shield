@@ -12,8 +12,9 @@
   #error The "Encoder" library modified by GRA and AFCH must be used!
 #endif
 
-#define FIRMWAREVERSION 1.22 //15.06.2023
+#define FIRMWAREVERSION 1.23
 
+//1.23 Добавлены комманды включения и выключения выходов (всех одновременно)
 //1.22 ускорена обработка команд через последовтельный порт
 //1.21 12.06.2023 добавлена поддержка управления через последовтельный порт
 //1.2 15.07.2021 исправлен баг с уходом фазы при перестройке частоты
@@ -44,6 +45,8 @@
 #define P1_PIN 15
 #define P2_PIN 14
 #define P3_PIN 4
+
+bool isPWR_DWN = false;
 
 class MyAD9959 : public AD9959<
     12,              // Reset pin (active = high)

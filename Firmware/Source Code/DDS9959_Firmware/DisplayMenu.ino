@@ -5,7 +5,16 @@ void DisplayMenu(uint8_t menuType)
   switch (menuType)
   {
   case MAIN_MENU:
-   // *********** First ROW Start ***********
+  u8g2.setCursor(58, 9);
+  if (isPWR_DWN) 
+  {
+    u8g2.print(F("OFF"));
+  } else
+  {
+    u8g2.print(F("   "));
+  }
+
+  // *********** First ROW Start ***********
   u8g2.setCursor(2, 20);
   if (curItem == &F0) u8g2.setDrawColor(0);
     else u8g2.setDrawColor(1);
@@ -262,8 +271,8 @@ void DrawBackground()
 {
   u8g2.clearBuffer();
   u8g2.setCursor(2, 9);
-  u8g2.print(F("Ch Freq. Hz    dBm Phase}"));
-  
+  u8g2.print(F("Ch Freq.Hz     dBm Phase}"));
+
   u8g2.drawHLine(0, 0, 128);
   u8g2.drawHLine(0, 11, 128);
   u8g2.drawVLine(14, 0, 52);
