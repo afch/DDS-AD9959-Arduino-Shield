@@ -9,8 +9,8 @@ Direct link to category:  https://gra-afch.com/product-category/rf-units/
 * A software-controlled clock source switch has been added.
 * A LED indicators of active REF CLK IN.
 
-# GA_Flasher or xLoader can be used to upload compiled firmware from "Firmware Compiled (.HEX File)" folder:   
-https://github.com/afch/GA_Flasher
+# GA Flasher or xLoader can be used to upload compiled firmware from "Firmware Compiled (.HEX File)" folder:   
+[GA Flasher](https://github.com/afch/GA_Flasher)
 
 "Firmware Compiled (.HEX File)" - folder contains pre-Compiled firmware (.HEX File), that can be uploaded via "AvrDude", GA_Flasher or any other software for flashing Atmega 2560
 
