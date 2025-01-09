@@ -4,6 +4,11 @@
 Web-site: https://gra-afch.com
 Direct link to category:  https://gra-afch.com/product-category/rf-units/
 
+# What's New in Version 2.х
+* The display on the SH1106 controller has been replaced with SSD1306/SSD1309.
+* A software-controlled clock source switch has been added.
+* A LED indicators of active REF CLK IN.
+
 # GA_Flasher or xLoader can be used to upload compiled firmware from "Firmware Compiled (.HEX File)" folder: https://github.com/afch/GA_Flasher
 
 "Firmware Compiled (.HEX File)" - folder contains pre-Compiled firmware (.HEX File), that can be uploaded via "AvrDude", GA_Flasher or any other software for flashing Atmega 2560
@@ -39,19 +44,8 @@ Key Benefits:
 * This shield support overclocking the AD9959 core up to 600 MHz.
 * DDS AD9959 Shield has ability to generate a signal up to 225 MHz (to suppress harmonics, it is recommended to overclock the AD9959 for frequencies above 200 MHz).
 
-# Switching a clock source is made by next components:
-<pre>
-|-------------------------------|-----------------------------------|-----------------|
-|      Clock source             |            Capacitors             |    Resistors    |
-|   (only one at a time)        | C20  |  C22  |  C18,C19 | C14,C17 |  XTAL | REF_CLK |
-|-------------------------------------------------------------------------------------|
-| XO - Crystal Oscillator (Z1)  |  -   |   -   |    V     |    X    |   V   |    X    |
-| TCXO - Oscillator 1ppm (Z2)   |  V   |   X   |    X     |    V    |   X   |    V    |
-| REF CLK - External Generator  |  X   |   X   |    X     |    V    |   X   |    V    |
-|-------------------------------------------------------------------------------------|
-</pre>
-
-Where V means that the component must be installed (soldered), and X - means that the component must be removed
+# The switching of clock sources:
+The switching of clock sources is performed through the clock menu and is handled by an onboard software-controlled switch. It does not require the installation or removal of any components on the board to switch between clock sources: TCXO/OCXO, External TCXO/OCXO or External Oscillator.
 
 # List of Serial Port Commands:
 Starting with version 1.21, the ability to control via the serial port has been added.
